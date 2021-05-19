@@ -19,28 +19,18 @@ export const getUsers = () => {
     return axios.get(url, {}, { headers });
 }
 
-export const deleteUser = (id) => {
-    const url = api.rootUrl + api.users + id;
-
-    return axios.delete(url, { id }, { headers });
-}
-
 // Message Actions
 
-export const createMessage = (message, sender) => {
+export const createMessage = (content, sender) => {
     const url = api.rootUrl + api.messages;
 
-    return axios.post(url, { data: message, sender }, { headers });
+    console.log('axios', {content, sender});
+
+    return axios.post(url, { content, sender }, { headers });
 }
 
 export const getMessages = () => {
     const url = api.rootUrl + api.messages;
 
     return axios.get(url, {}, { headers });
-}
-
-export const deleteMessage = (id) => {
-    const url = api.rootUrl + api.messages + id;
-
-    return axios.delete(url, { id }, { headers });
 }

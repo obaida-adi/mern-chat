@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react';
 import { Container, TextField, Typography, Button } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { createUser } from '../actions';
-
 import { UserContext } from '../contexts/userContext';
 import { useHistory } from 'react-router';
 import { SocketContext } from '../contexts/socketContext';
-
-import logo from '../assets/images/logo.png';
-import './Join.css';
+import storageTokens from '../enums/storageTokens';
+import Logo from './Logo';
+import Footer from './Footer';
 
 const Join = () => {
 
@@ -18,17 +17,15 @@ const Join = () => {
 
     const [name, setName] = useState('');
 
-    const handleChange = (event) => {
-        setName(event.target.value);
-    };
-
-    const handleSubmit = () => {
-        createUser(name).then(user => {
+    const join = () => {
+        createUser(name).then(response => {
+            const user = response.data.user;
             console.log('Created new user:', user);
 
-            const newUser = { id: user._id, name: user.name };
-            setUser(newUser);
-            socket.emit('join', newUser);
+            setUser(user);
+            sessionStorage.setItem(storageTokens.USER_DATA, JSON.stringify(user));
+
+            socket.emit('join', user);
             history.push('/chat');
         }).catch(err => {
             alert('Uh oh! Something went wrong. Please try again');
@@ -36,19 +33,31 @@ const Join = () => {
         });
     };
 
-    const containerStyles = { 
-        textAlign: 'center',
-        marginTop: '3rem',  
-        padding: '1rem',
-        borderRadius: '10px'
+    const containerStyles = {
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     };
 
+    const inputContainerStyles = {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+
     return (
-        <Container maxWidth='md' style={ containerStyles }>
-            <img src={ logo } alt="ping logo" className="logo"></img>
-            <Typography gutterBottom variant="h5" component="h1" style={{ fontWeight: 'bold' }}>👋  Hi there! To join the conversation, enter a nickname.</Typography>
-            <TextField onChange={ handleChange } variant="outlined" placeholder="Johnny Two Shoes" id="outlined-basic" label="Nickname"></TextField>
-            <Button onClick={ handleSubmit } endIcon={<ArrowForwardIcon />} style={{ fontWeight: 'bold', marginTop: '10px', marginLeft: '1rem' }} variant="contained" color="primary">Join</Button>
+        <Container style={ containerStyles }>
+            <Logo width="18rem" />
+            <Typography gutterBottom variant="h5" component="h1" style={{ fontWeight: 'bold', textAlign: 'center' }}>👋  Hi there! To join the conversation, enter a nickname.</Typography>
+            <Container style={ inputContainerStyles }>
+                <TextField onChange={(event) => setName(event.target.value)} variant="outlined" placeholder="Johnny Two Shoes" label="Nickname"></TextField>
+                <Button disabled={ name.trim() === '' } onClick={ join } endIcon={<ArrowForwardIcon />} style={{ fontWeight: 'bold', marginLeft: '1rem' }} variant="contained" color="primary">Join</Button>
+            </Container>
+            <Footer />
         </Container>
     );
 }
