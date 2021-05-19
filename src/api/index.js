@@ -1,5 +1,5 @@
 const API = {
-    rootUrl: "http://localhost:5000/",
+    rootUrl: "https://warm-shelf-42022.herokuapp.com/",
     users: "users/",
     messages: "messages/"
 }
