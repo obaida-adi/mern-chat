@@ -1,14 +1,24 @@
-import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Home from './components/Home';
-import Room from './components/Room';
+import Join from './components/Join';
+import Chat from './components/Chat';
+import { ThemeProvider } from '@material-ui/core';
+import { UserProvider } from './contexts/userContext';
+import { SocketProvider } from './contexts/socketContext';
+import theme from './theme';
 
 function App() {
+
   return (
-    <Router>
-      <Route exact path="/" component={ Home } />
-      <Route path="/room/:id" component={ Room } />
-    </Router>
+    <SocketProvider>
+      <UserProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Route exact path="/" component={ Join } />
+            <Route path="/chat" component={ Chat } />
+          </Router>
+        </ThemeProvider>
+      </UserProvider>
+    </SocketProvider>
   );
 }
 

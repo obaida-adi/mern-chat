@@ -1,42 +1,46 @@
 import api from '../api';
 import axios from 'axios';
 
-export const createRoom = (name) => {
-    const url = api.rootUrl + api.room;
-
-    return axios.post(url, { name }, {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+const headers = {
+    "Content-Type": "application/json"
 }
 
-export const getRoom = (id) => {
-    const url = api.rootUrl + api.room + id;
+// User Actions
 
-    return axios.get(url, { id }, {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+export const createUser = (name) => {
+    const url = api.rootUrl + api.users;
+
+    return axios.post(url, { name }, { headers });
 }
 
-export const addUser = (name, id) => {
-    const url = api.rootUrl + api.room + id;
+export const getUsers = () => {
+    const url = api.rootUrl + api.users;
 
-    return axios.get(url, { name }, {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+    return axios.get(url, {}, { headers });
 }
 
-export const deleteRoom = (id) => {
-    const url = api.rootUrl + api.room + id;
+export const deleteUser = (id) => {
+    const url = api.rootUrl + api.users + id;
 
-    return axios.delete(url, { id }, {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
+    return axios.delete(url, { id }, { headers });
+}
+
+// Message Actions
+
+export const createMessage = (message, sender) => {
+    const url = api.rootUrl + api.messages;
+
+    return axios.post(url, { data: message, sender }, { headers });
+}
+
+export const getMessages = () => {
+    const url = api.rootUrl + api.messages;
+
+    return axios.get(url, {}, { headers });
+}
+
+export const deleteMessage = (id) => {
+    const url = api.rootUrl + api.messages + id;
+
+    return axios.delete(url, { id }, { headers });
 }

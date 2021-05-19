@@ -1,6 +1,7 @@
 const API = {
     rootUrl: "http://localhost:5000/",
-    room: "room/"
+    users: "users/",
+    messages: "messages/"
 }
 
 export default API;
