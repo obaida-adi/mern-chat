@@ -12,7 +12,7 @@ import Footer from './Footer';
 const Join = () => {
 
     const history = useHistory();
-    const { setUser } = useContext(UserContext) || {};
+    const { setUser } = useContext(UserContext);
     const socket = useContext(SocketContext);
 
     const [name, setName] = useState('');

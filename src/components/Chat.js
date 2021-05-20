@@ -19,7 +19,7 @@ const Chat = () => {
 
     const SYSTEM_NAME = 'Ping';
 
-    const user = useContext(UserContext) || null;
+    const { user } = useContext(UserContext);
     const socket = useContext(SocketContext);
     const messagesBottomRef = useRef(null);
 
@@ -114,8 +114,8 @@ const Chat = () => {
     };
 
     const messageContainerStyles = { 
-        height: '50rem',
-        maxHeight: '50rem',
+        height: '40rem',
+        maxHeight: '40rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
@@ -129,7 +129,8 @@ const Chat = () => {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: '1rem'
     };
 
     const messageListContainerStyles = {
