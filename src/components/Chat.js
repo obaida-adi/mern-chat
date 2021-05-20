@@ -66,7 +66,6 @@ const Chat = () => {
 
         socket.on('message_event', (data) => {
             setMessages([...messages, { content: data.content, sender: data.sender }]);
-            scrollToBottom();
         });
 
         socket.on('leave_event', (data) => {
@@ -76,8 +75,9 @@ const Chat = () => {
     });
 
     const sendMessage = () => {
-        createMessage(message, user._id).then(response => {
+        createMessage(message, user._id).then(() => {
             socket.emit('message', { content: message, sender: user._id });
+            setMessage('');
         }).catch(err => {
             console.log(err)
         }); 
@@ -131,8 +131,9 @@ const Chat = () => {
     const messageListContainerStyles = {
         height: '40rem',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end'
+        flexDirection: 'column-reverse',
+        justifyContent: 'flex-start',
+        overflowY: 'scroll'
     };
 
     return loading ? (
@@ -151,7 +152,7 @@ const Chat = () => {
             <Logo width="8rem" />
             <Container style={ messageContainerStyles }>
                 <Container style={ messageListContainerStyles }>
-                    <List style={{ overflowY: 'scroll' }}>
+                    <List>
                         {
                             messages.length > 0 ? 
                                 messages.map((message, index) => {
@@ -163,7 +164,7 @@ const Chat = () => {
                     </List>
                 </Container>
                 <Container style={ messageInputContainerStyles }>
-                    <TextField style={{ width: '20rem' }} onChange={ (event) => setMessage(event.target.value) } variant="outlined" placeholder="Send message" label="Message"></TextField>
+                    <TextField style={{ width: '20rem' }} value={message} onChange={(event) => setMessage(event.target.value)} variant="outlined" placeholder="Send message" label="Message"></TextField>
                     <Button disabled={ message.trim() === '' } onClick={ sendMessage } endIcon={<Send />} style={{ fontWeight: 'bold', marginLeft: '0.5rem' }} variant="contained" color="primary">Send</Button>
                 </Container> 
             </Container>
