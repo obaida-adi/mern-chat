@@ -133,7 +133,7 @@ const Chat = () => {
         display: 'flex',
         flexDirection: 'column-reverse',
         justifyContent: 'flex-start',
-        overflowY: 'scroll'
+        overflowY: 'auto'
     };
 
     return loading ? (
