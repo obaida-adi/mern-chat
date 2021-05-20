@@ -34,7 +34,7 @@ const Chat = () => {
     // On first render, get users and messages
     useEffect(() => {
 
-        if (!user) {
+        if (Object.keys(user).length === 0) {
             // If there is no user and they're on the chat page, then that's an error
             setError(true);
         } else {

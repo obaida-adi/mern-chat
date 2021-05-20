@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Container, TextField, Typography, Button } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { createUser } from '../actions';
+import { createUser, getUserByName } from '../actions';
 import { UserContext } from '../contexts/userContext';
 import { useHistory } from 'react-router';
 import { SocketContext } from '../contexts/socketContext';
@@ -18,19 +18,32 @@ const Join = () => {
     const [name, setName] = useState('');
 
     const join = () => {
-        createUser(name).then(response => {
-            const user = response.data.user;
 
-            setUser(user);
-            sessionStorage.setItem(storageTokens.USER_DATA, JSON.stringify(user));
+        getUserByName(name).then(response => {
+            const users = response.data.user;
 
-            socket.emit('join', user);
-            history.push('/chat');
-        }).catch(err => {
-            alert('Uh oh! Something went wrong. Please try again');
-            console.log(err);
-        });
+            if (users.length > 0) {
+                const user = users[0];
+                setUserAndNavigate(user);
+            } else {
+
+                createUser(name).then(response => {
+                    const user = response.data.user;
+                    setUserAndNavigate(user);
+                }).catch(err => {
+                    alert('Uh oh! Something went wrong. Please try again');
+                    console.log(err);
+                });
+            }
+        }).catch(err => console.log(err));
     };
+
+    const setUserAndNavigate = (user) => {
+        setUser(user);
+        sessionStorage.setItem(storageTokens.USER_DATA, JSON.stringify(user));
+        socket.emit('join', user);
+        history.push('/chat');
+    }
 
     const containerStyles = {
         height: '100vh',

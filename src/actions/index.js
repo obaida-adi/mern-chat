@@ -19,6 +19,12 @@ export const getUsers = () => {
     return axios.get(url, {}, { headers });
 }
 
+export const getUserByName = (name) => {
+    const url = api.rootUrl + api.users + name;
+
+    return axios.get(url, {}, { headers })
+}
+
 // Message Actions
 
 export const createMessage = (content, sender) => {
