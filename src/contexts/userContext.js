@@ -4,7 +4,7 @@ import StorageTokens from '../enums/storageTokens';
 const UserContext = React.createContext();
 
 const UserProvider = ({ children }) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const storedData = sessionStorage.getItem(StorageTokens.USER_DATA);

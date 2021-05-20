@@ -19,7 +19,7 @@ const Chat = () => {
 
     const SYSTEM_NAME = 'Ping';
 
-    const { user } = useContext(UserContext);
+    const user = useContext(UserContext) || null;
     const socket = useContext(SocketContext);
     const messagesBottomRef = useRef(null);
 
@@ -34,7 +34,7 @@ const Chat = () => {
     // On first render, get users and messages
     useEffect(() => {
 
-        if (Object.keys(user).length === 0) {
+        if (!user) {
             // If there is no user and they're on the chat page, then that's an error
             setError(true);
         } else {
@@ -59,24 +59,28 @@ const Chat = () => {
 
     // Listen for socket messages
     useEffect(() => {
-        socket.on('join_event', (data) => {
-            setMessages([...messages, { content: `👀 ${data.name} has joined!`, sender: SYSTEM_NAME }]);
-            setUsers([...users, data])
-        });
-
-        socket.on('message_event', (data) => {
-            setMessages([...messages, { content: data.content, sender: data.sender }]);
-        });
-
-        socket.on('leave_event', (data) => {
-            setMessages([...messages, { content: `✌️ ${data.name} has left!`, sender: SYSTEM_NAME }]);
-            setUsers([...users, data])
-        });
+        if (!!socket) {
+            socket.on('join_event', (data) => {
+                setMessages([...messages, { content: `👀 ${data.name} has joined!`, sender: SYSTEM_NAME }]);
+                setUsers([...users, data])
+            });
+    
+            socket.on('message_event', (data) => {
+                setMessages([...messages, { content: data.content, sender: data.sender }]);
+            });
+    
+            socket.on('leave_event', (data) => {
+                setMessages([...messages, { content: `✌️ ${data.name} has left!`, sender: SYSTEM_NAME }]);
+                setUsers([...users, data])
+            });
+        }
     });
 
     const sendMessage = () => {
         createMessage(message, user._id).then(() => {
-            socket.emit('message', { content: message, sender: user._id });
+            if (!!socket) {
+                socket.emit('message', { content: message, sender: user._id });
+            }
             setMessage('');
         }).catch(err => {
             console.log(err)
