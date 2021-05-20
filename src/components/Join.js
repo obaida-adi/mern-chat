@@ -20,7 +20,6 @@ const Join = () => {
     const join = () => {
         createUser(name).then(response => {
             const user = response.data.user;
-            console.log('Created new user:', user);
 
             setUser(user);
             sessionStorage.setItem(storageTokens.USER_DATA, JSON.stringify(user));

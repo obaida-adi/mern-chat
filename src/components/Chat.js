@@ -70,7 +70,6 @@ const Chat = () => {
         });
 
         socket.on('leave_event', (data) => {
-            console.log('incoming event', data);
             setMessages([...messages, { content: `✌️ ${data.name} has left!`, sender: SYSTEM_NAME }]);
             setUsers([...users, data])
         });
@@ -79,7 +78,6 @@ const Chat = () => {
     const sendMessage = () => {
         createMessage(message, user._id).then(response => {
             socket.emit('message', { content: message, sender: user._id });
-            console.log(response)
         }).catch(err => {
             console.log(err)
         }); 

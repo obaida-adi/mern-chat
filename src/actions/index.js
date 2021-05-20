@@ -24,8 +24,6 @@ export const getUsers = () => {
 export const createMessage = (content, sender) => {
     const url = api.rootUrl + api.messages;
 
-    console.log('axios', {content, sender});
-
     return axios.post(url, { content, sender }, { headers });
 }
 
