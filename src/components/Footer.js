@@ -4,9 +4,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import nameLogo from '../assets/images/name-logo.svg';
 
 const Footer = () => {
-
-
-
+    
     return (
         <Container style={{ textAlign: 'center', marginTop: '2rem'}}>
             <Typography variant='body1'>Designed by O'Baida Adi.</Typography>
